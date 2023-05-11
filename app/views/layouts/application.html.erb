@@ -10,12 +10,25 @@
   </head>
 
   <body>
+    <header>
+      <nav>
+        <%= link_to 'Criar conta', new_user_registration_path %>
+      </nav>
+
+      <div>
+        <% if current_user&.admin? %>
+          <p>(adm)</p>
+        <% end %>
+      </div>
+    </header>
 
     <div>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
     </div>
     
-    <%= yield %>
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>

@@ -4,9 +4,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  
+  validates :cpf, presence: true
+  validates :cpf, :email, uniqueness: true
+  validates :cpf, cpf: true
+
   enum :user_type, {admin: 0, common: 1}
 
-  before_validation :set_user_type#, on: :create
+  scope :admins, -> { where(user_type: :admin)}
+
+  before_validation :set_user_type, on: :create
 
   private
 
