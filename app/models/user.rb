@@ -11,8 +11,6 @@ class User < ApplicationRecord
 
   enum :user_type, {admin: 0, common: 1}
 
-  scope :admins, -> { where(user_type: :admin)}
-
   before_validation :set_user_type, on: :create
 
   private
