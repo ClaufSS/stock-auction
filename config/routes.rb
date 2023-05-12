@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   
   root to: 'home#index'
 
-  resources :auction_item, only: [:show, :new, :create], as: 'auction_items'
+  resources :auction_items, only: [:show, :new, :create]
+  resources :lots, only: [:new, :create]
 end
-

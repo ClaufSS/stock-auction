@@ -1,4 +1,4 @@
-class AuctionItemController < ApplicationController
+class AuctionItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
   before_action :require_admin, only: [:new, :create]
   before_action :set_categories, only: [:new, :create]
