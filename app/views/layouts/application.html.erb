@@ -11,8 +11,17 @@
 
   <body>
     <header>
+
       <nav>
-        <%= link_to 'Criar conta', new_user_registration_path %>
+        <% if user_signed_in? %>
+          <div>
+            <%= link_to 'Sair', root_path %>
+          </div>
+        <% else %>
+          <div>
+            <%= link_to 'Entrar', new_user_session_path %>
+          </div>
+        <% end %>
       </nav>
 
       <div>

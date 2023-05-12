@@ -2,13 +2,33 @@ require 'rails_helper'
 
 
 describe 'Usuário registra uma conta' do
+  it 'a partir do menu' do
+    visit root_path
+
+    puts page
+
+    within 'nav' do
+      click_on 'Entrar'
+    end
+    
+    click_on 'Inscrever-se'
+
+    expect(current_path).to eq new_user_registration_path
+    expect(page).to have_field 'CPF'
+    expect(page).to have_field 'Email'
+    expect(page).to have_field 'Senha'
+    expect(page).to have_field 'Confirme sua senha'    
+  end
+
   context 'com sucesso' do
     it 'como usuário comum' do
       visit root_path
       
       within 'nav' do
-        click_on 'Criar conta'
+        click_on 'Entrar'
       end
+
+      click_on 'Inscrever-se'
 
       within 'main form' do
         fill_in 'CPF',	with: '23639079060' 
@@ -29,8 +49,10 @@ describe 'Usuário registra uma conta' do
       visit root_path
 
       within 'nav' do
-        click_on 'Criar conta'
+        click_on 'Entrar'
       end
+
+      click_on 'Inscrever-se'
   
       within 'main form' do
         fill_in 'CPF',	with: '23639079060' 
@@ -46,19 +68,5 @@ describe 'Usuário registra uma conta' do
         expect(page).to have_content '(adm)'
       end
     end
-  end
-
-  it 'a partir do menu' do
-    visit root_path
-
-    within 'nav' do
-      click_on 'Criar conta'
-    end
-
-    expect(current_path).to eq new_user_registration_path
-    expect(page).to have_field 'CPF'
-    expect(page).to have_field 'Email'
-    expect(page).to have_field 'Senha'
-    expect(page).to have_field 'Confirme sua senha'    
   end
 end
