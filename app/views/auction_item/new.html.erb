@@ -1,0 +1,48 @@
+
+<section>
+  <%= form_with model: @item do |f| %>
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div>
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+    </div>
+
+    <div>
+      <%= f.label :weight %>
+      <%= f.number_field :weight %>
+    </div>
+
+    <div>
+      <%= f.label :width %>
+      <%= f.number_field :width %>
+    </div>
+
+    <div>
+      <%= f.label :height %>
+      <%= f.number_field :height %>
+    </div>
+
+    <div>
+      <%= f.label :depth %>
+      <%= f.number_field :depth %>
+    </div>
+
+    <div>
+      <%= f.label :category_item_id %>
+      <%= f.collection_select :category_item_id, @categories, :id, :description %>
+    </div>
+
+    <div>
+      <%= f.label :photo %>
+      <%= f.file_field :photo %>
+    </div>
+
+    <div>
+      <%= f.submit t('.register') %>
+    </div>
+  <% end %>
+</section>

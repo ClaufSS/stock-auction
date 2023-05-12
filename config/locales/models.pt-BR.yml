@@ -1,10 +1,27 @@
 pt-BR:
   activerecord:
     model:
-      user: 'Usuário'
+      user:
+        one: Usuário
+        other: Usuários
+      
+      auction_item:
+        one: 'Item de leilão'
+        other: 'Itens de leilão'
 
     attributes:
       user:
         email: 'Email'
         password: 'Senha'
         cpf: 'CPF'
+
+      auction_item:
+        name: Nome
+        description: Descrição
+        photo: Foto
+        weight: Peso
+        width: Largura
+        height: Altura
+        depth: Profundidade
+        category_item: Categoria
+        category_item_id: Categoria

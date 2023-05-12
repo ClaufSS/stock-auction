@@ -5,8 +5,6 @@ describe 'Usuário registra uma conta' do
   it 'a partir do menu' do
     visit root_path
 
-    puts page
-
     within 'nav' do
       click_on 'Entrar'
     end
