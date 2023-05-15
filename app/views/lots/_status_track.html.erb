@@ -1,0 +1,10 @@
+
+<div>
+  <p>Status: <%= t(".#{@lot.status}") %></p>
+
+  <% if @lot.pending? %>
+    <% if @lot.register_user != current_user %>
+      <%= button_to 'Aprovar Lote', approve_lot_path(@lot) %>
+    <% end %>
+  <% end %>
+</div>

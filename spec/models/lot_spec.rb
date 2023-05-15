@@ -99,5 +99,24 @@ RSpec.describe Lot, type: :model do
       end
     end
   end
-end
 
+  context '#status' do
+    it 'após criação deve ser #pending' do
+      user = User.create!(
+        cpf: '83923678045',
+        email: 'roberto@leilaodogalpao.com.br',
+        password: 'f4k3p455w0rd')
+
+      lot = Lot.create!(
+        code: 'abc123',
+        start_date: 1.day.from_now,
+        end_date: 2.day.from_now,
+        start_price: 100,
+        min_bid: 2,
+        register_user: user
+      )
+
+      expect(lot).to be_pending 
+    end
+  end
+end

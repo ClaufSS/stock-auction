@@ -6,3 +6,9 @@ pt-BR:
   lots:
     new:
       register: Registrar
+    
+    status_track:
+      pending: 'Aguardando aprovação'
+      running: 'Em disputa'
+      canceled: 'Cancelado'
+      closed: 'Encerrado'

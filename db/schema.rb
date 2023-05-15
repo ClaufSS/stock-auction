@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_13_002156) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_15_141517) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -50,7 +50,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_13_002156) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code"
+    t.integer "status", default: 0
+    t.integer "lot_id"
     t.index ["category_item_id"], name: "index_auction_items_on_category_item_id"
+    t.index ["lot_id"], name: "index_auction_items_on_lot_id"
   end
 
   create_table "category_items", force: :cascade do |t|
@@ -65,11 +68,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_13_002156) do
     t.datetime "end_date"
     t.float "start_price"
     t.float "min_bid"
-    t.integer "status"
     t.integer "register_user_id", null: false
     t.integer "approver_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
     t.index ["approver_user_id"], name: "index_lots_on_approver_user_id"
     t.index ["register_user_id"], name: "index_lots_on_register_user_id"
   end
@@ -91,6 +94,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_13_002156) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "auction_items", "category_items"
+  add_foreign_key "auction_items", "lots"
   add_foreign_key "lots", "users", column: "approver_user_id"
   add_foreign_key "lots", "users", column: "register_user_id"
 end

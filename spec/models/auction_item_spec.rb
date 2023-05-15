@@ -87,13 +87,45 @@ RSpec.describe AuctionItem, type: :model do
         expect(item.code.length).to be 10
       end
 
-      it 'e deve ser gerado aleátoriamente' do
+      it 'e deve ser gerado aleatoriamente' do
         item = AuctionItem.new
 
         allow(SecureRandom).to receive(:alphanumeric).with(10).and_return 'abC34D6789e'
         item.valid?
 
         expect(item.code).to eq 'abC34D6789e'
+      end
+
+      it 'e não deve mudar depois de criado' do
+        attach_img = ->(item, filename) {
+          item.photo.attach(
+            io: File.open(Rails.root.join("public/photo_items/#{filename}")),
+            filename: filename,
+            content_type: 'image/png'
+          )
+        }
+
+        
+        musical_instrument = CategoryItem.create!(
+          description: "Musical instrument"
+        )
+
+        auction_item = AuctionItem.new(
+          name: "Violão Acústico",
+          description: "Violão de cordas de aço, perfeito para músicos iniciantes",
+          weight: "1500",
+          width: "100",
+          height: "10",
+          depth: "40",
+          category_item: musical_instrument
+        )
+
+        attach_img.call(auction_item, "-CG-162-C-1.jpg")
+        auction_item.save!
+        current_code = auction_item.code
+        auction_item.valid?
+
+        expect(current_code).to eq auction_item.code
       end
     end
   end

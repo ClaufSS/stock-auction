@@ -89,7 +89,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "-CG-162-C-1.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Smartphone",
@@ -102,7 +102,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "samsung-galaxy-a54-5g.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Mesa de Escritório",
@@ -115,7 +115,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "eb48a2995fab59fdd9501c21632a9218.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Vaso Decorativo",
@@ -128,7 +128,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "vaso-decorativo-flat-italy-lyor-vidro.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Tapete Automotivo",
@@ -141,7 +141,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "tapete-automotivo-universal-preto-e6087-4-pecas-ecotap.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Pintura Abstrata",
@@ -154,7 +154,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "2492339-pintura-retrato-gato-abstrato-vetor.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Guitarra Elétrica",
@@ -167,7 +167,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "7899871608841-1.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Câmera Fotográfica",
@@ -180,7 +180,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Escultura de Bronze",
@@ -193,7 +193,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-auction_item.save
+auction_item.save!
 
 auction_item = AuctionItem.new(
   name: "Luminária de Mesa",
@@ -206,7 +206,7 @@ auction_item = AuctionItem.new(
 )
 
 attach_img.call(auction_item, "435223z.jpg")
-auction_item.save
+auction_item.save!
 
 ####################################################
 # Lotes de item

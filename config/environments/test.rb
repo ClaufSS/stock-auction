@@ -50,4 +50,5 @@ Rails.application.configure do
 
   # Store files locally.
   config.active_storage.service = :test
+  config.active_storage.variant_processor = :mini_magick
 end
