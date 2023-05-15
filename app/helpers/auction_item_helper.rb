@@ -7,12 +7,6 @@ module AuctionItemHelper
       sizes[attr] = number_with_precision(value, precision: precision)
     end
 
-    response = "
-      <p>Dimensão (cm): 
-        #{sizes[:width]} X #{sizes[:height]} X #{sizes[:depth]}
-      </p>
-    "
-
-    response.html_safe
+    tag.p "Dimensão (cm): #{sizes[:width]} X #{sizes[:height]} X #{sizes[:depth]}"
   end
 end

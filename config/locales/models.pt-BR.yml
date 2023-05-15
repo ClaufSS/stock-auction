@@ -1,6 +1,6 @@
 pt-BR:
   activerecord:
-    model:
+    models:
       user:
         one: Usuário
         other: Usuários
@@ -8,6 +8,10 @@ pt-BR:
       auction_item:
         one: 'Item de leilão'
         other: 'Itens de leilão'
+
+      lot:
+        one: Lote
+        other: Lotes
 
     attributes:
       user:
@@ -25,3 +29,30 @@ pt-BR:
         depth: Profundidade
         category_item: Categoria
         category_item_id: Categoria
+
+      lot:
+        code: 'Código'
+        start_date: 'Data de início'
+        end_date: 'Data de encerramento'
+        start_price: 'Preço inicial'
+        min_bid: 'Lance mínimo'
+        register_user: 'Usuário responsável pelo registro do lote'
+        register_user_id: 'Usuário responsável pelo registro do lote'
+        approver_user: 'Usuário responsável pela aprovação do lote'
+        approver_user_id: 'Usuário responsável pela aprovação do lote'
+    
+    errors:
+      models:
+        user:
+          attributes:
+            cpf:
+              invalid: 'é inválido'
+              unpermitted_chars: 'deve conter apenas números'
+              out_of_range: 'deve conter 11 números'
+        
+        lot:
+          attributes:
+            code:
+              wrong_length: 'deve conter %{size} caracteres'
+              three_letters: 'deve conter 3 letras'
+              three_numbers: 'deve conter 3 números'

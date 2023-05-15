@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -18,6 +19,6 @@ class User < ApplicationRecord
   def set_user_type
     adm_domain = '@leilaodogalpao.com.br'
     
-    self.user_type = self.email.ends_with?(adm_domain) ? :admin : :common
+    self.user_type = :admin if email.ends_with?(adm_domain)
   end
 end

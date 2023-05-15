@@ -1,4 +1,8 @@
 pt-BR:
   auction_items:
     new:
-      register: 'Registrar'
+      register: Registrar
+    
+  lots:
+    new:
+      register: Registrar

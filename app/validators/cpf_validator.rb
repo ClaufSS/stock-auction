@@ -4,15 +4,15 @@ class CpfValidator < ActiveModel::EachValidator
     
     if record.cpf.present?
       unless cpf_checker(value)
-        record.errors.add(attribute, :invalid, message: 'does not respect rules')
+        record.errors.add(attribute, :invalid)
       end
 
       unless format_checker(value)
-        record.errors.add(attribute, :invalid, message: 'must contain only numbers')
+        record.errors.add(attribute, :unpermitted_chars)
       end
 
-      unless value.length
-        record.errors.add(attribute, :invalid, message: 'need to have 11 numbers')
+      unless value.length == 11
+        record.errors.add(attribute, :out_of_range)
       end
     end
   end

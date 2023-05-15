@@ -61,7 +61,7 @@ RSpec.describe User, type: :model do
       expect(user.errors[:cpf]).to include 'já está em uso'
     end
 
-    it 'cpf deve ser único' do
+    it 'email deve ser único' do
       User.create!(
         cpf: '76167052000',
         email: 'roberto@gmail.com',

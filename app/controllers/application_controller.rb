@@ -6,4 +6,11 @@ class ApplicationController < ActionController::Base
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:cpf])
   end
+
+  def require_admin
+    unless current_user.admin?
+      flash[:alert] = "Acesso restrito apenas para administradores."
+      redirect_to root_path
+    end
+  end
 end

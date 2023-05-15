@@ -1,0 +1,36 @@
+
+<section>
+  <%= form_with model: @lot do |f| %>
+    <div>
+      <%= @lot.errors.full_messages %>
+    </div>
+    <div>
+      <%= f.label :code %>
+      <%= f.text_field :code %>
+    </div>
+
+    <div>
+      <%= f.label :start_date %>
+      <%= f.datetime_local_field :start_date %>
+    </div>
+
+    <div>
+      <%= f.label :end_date %>
+      <%= f.datetime_local_field :end_date %>
+    </div>
+
+    <div>
+      <%= f.label :start_price %>
+      <%= f.number_field :start_price %>
+    </div>
+
+    <div>
+      <%= f.label :min_bid %>
+      <%= f.number_field :min_bid %>
+    </div>
+
+    <div>
+      <%= f.submit t('.register') %>
+    </div>
+  <% end %>
+</section>

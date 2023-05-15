@@ -1,0 +1,31 @@
+
+<section>
+  <div>
+    <h2><%= Lot.model_name.human %> <%= @lot.code %></h2>
+
+    <div>
+      <p><%= Lot.human_attribute_name :register_user %></p>
+      <p><%= @lot.register_user.email %></p>
+    </div>
+
+    <div>
+      <p><%= Lot.human_attribute_name :start_date %></p>
+      <p><%= l(@lot.start_date, format: :long) %></p>
+    </div>
+
+    <div>
+      <p><%= Lot.human_attribute_name :end_date %></p>
+      <p><%= l(@lot.end_date, format: :long) %></p>
+    </div>
+
+    <div>
+      <p><%= Lot.human_attribute_name :start_price %></p>
+      <p><%= number_to_currency @lot.start_price %></p>
+    </div>
+
+    <div>
+      <p><%= Lot.human_attribute_name :min_bid %></p>
+      <p><%= number_to_currency @lot.min_bid %></p>
+    </div>    
+  </div>
+</section>

@@ -7,5 +7,5 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :auction_items, only: [:show, :new, :create]
-  resources :lots, only: [:new, :create]
+  resources :lots, only: [:show, :new, :create]
 end

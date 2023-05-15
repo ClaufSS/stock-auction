@@ -26,6 +26,10 @@
         <% if user_signed_in? && current_user.admin? %>
           <%= link_to "Novo item", new_auction_item_path %>
         <% end %>
+
+        <% if current_user&.admin? %>
+          <%= link_to "Novo lote", new_lot_path %>
+        <% end %>
       </nav>
 
       <div>

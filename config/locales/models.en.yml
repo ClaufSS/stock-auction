@@ -1,0 +1,18 @@
+en:
+  activerecord:
+
+    errors:
+      models:
+        user:
+          attributes:
+            cpf:
+              invalid: 'is invalid'
+              unpermitted_chars: 'must contain only numbers'
+              out_of_range: 'need to have 11 numbers'
+        
+        lot:
+          attributes:
+            code:
+              wrong_length: 'must contain %{size} chars'
+              three_letters: 'must contain 3 letters'
+              three_numbers: 'must contain 3 numbers'

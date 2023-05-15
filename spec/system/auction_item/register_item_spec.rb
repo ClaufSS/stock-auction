@@ -2,12 +2,6 @@ require 'rails_helper'
 
 
 describe 'Administrador registra pedido' do
-  it 'deve estar autenticado' do
-    visit new_auction_item_path
-
-    expect(current_path).to eq new_user_session_path
-  end
-
   it 'a partir do menu' do
     user = User.create!(
       cpf: '83923678045',
@@ -70,30 +64,50 @@ describe 'Administrador registra pedido' do
   end
 end
 
-describe 'Usuário comum não pode' do
-  it 'ver link Novo item' do
-    user = User.create!(
-      cpf: '38974528045',
-      email: 'carlos@uol.com',
-      password: 'f4k3p455w0rd')
+describe 'Deve ser proibido' do
+  context 'ver link Novo item' do
+    it 'para usuários comum' do
+      user = User.create!(
+        cpf: '38974528045',
+        email: 'carlos@uol.com',
+        password: 'f4k3p455w0rd')
 
-    login_as(user)
-    visit root_path
+      login_as(user)
+      visit root_path
 
-    within 'nav' do
-      expect(page).not_to have_link 'Novo item'
+      within 'nav' do
+        expect(page).not_to have_link 'Novo item'
+      end
+    end
+
+    it 'para visitantes' do
+      visit root_path
+
+      within 'nav' do
+        expect(page).not_to have_link 'Novo item'
+      end
     end
   end
 
-  it 'ter acesso a página de registro de item' do
-    user = User.create!(
-      cpf: '38974528045',
-      email: 'carlos@uol.com',
-      password: 'f4k3p455w0rd')
+  context 'ter acesso a página de registro de item' do
+    it 'para usuários comum' do
+      user = User.create!(
+        cpf: '38974528045',
+        email: 'carlos@uol.com.br',
+        password: 'f4k3p455w0rd')
 
-    login_as(user)
-    visit new_auction_item_path
+      login_as(user)
+      visit new_auction_item_path
 
-    expect(current_path).to eq root_path
+      expect(current_path).to eq root_path
+      expect(page).to have_content 'Acesso restrito apenas para administradores.'
+    end
+
+    it 'para visitantes' do
+      visit new_auction_item_path
+    
+      expect(current_path).to eq new_user_session_path
+      expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+    end
   end
 end

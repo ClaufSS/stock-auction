@@ -34,11 +34,4 @@ class AuctionItemsController < ApplicationController
   def set_categories
     @categories = CategoryItem.all
   end
-
-  def require_admin
-    unless current_user.admin?
-      flash[:alert] = "Acesso restrito apenas para administradores."
-      redirect_to root_path
-    end
-  end
 end
