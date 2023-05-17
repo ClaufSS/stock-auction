@@ -5,7 +5,7 @@ class Lot < ApplicationRecord
 
   validates :code, :start_date, :end_date, :start_price, :min_bid, presence: true
   validates :code, lot_code: true
-  validates :start_date, :end_date, comparison: {greater_than: 1.day.from_now.to_date}
+  validates :start_date, :end_date, comparison: {greater_than: :min_date_expected}
   validates :end_date, comparison: {greater_than: :start_date}
 
   enum :status, {pending: 0, approved: 1, canceled: 2}
@@ -15,4 +15,10 @@ class Lot < ApplicationRecord
   }
 
   scope :scheduled, -> {where('status = ? AND start_date > ?', 1, Time.current)}
+
+  private
+
+  def min_date_expected
+    1.day.from_now.to_date
+  end
 end
