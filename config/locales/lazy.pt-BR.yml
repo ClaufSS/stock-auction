@@ -12,3 +12,6 @@ pt-BR:
       approved: 'Em disputa'
       canceled: 'Cancelado'
       closed: 'Encerrado'
+
+    bid_panel:
+      offer: 'Oferta'

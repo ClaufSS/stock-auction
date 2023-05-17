@@ -1,0 +1,14 @@
+
+<% if user_signed_in? && current_user.common? && @lot.running? %>
+  <div class='bid-panel'>
+    <p>Oferta mínima: R$ 100,00</p>
+
+    <div>
+      <%= form_with url: bid_lot_path(@lot) do |f| %>
+        <%= f.label :offer, t('.offer') %>
+        <%= f.number_field :offer %>
+        <%= f.submit 'Fazer oferta' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

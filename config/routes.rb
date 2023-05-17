@@ -11,5 +11,6 @@ Rails.application.routes.draw do
     post 'add', on: :member
     post 'remove', on: :member
     post 'approve', on: :member
+    post 'bid', on: :member
   end
 end

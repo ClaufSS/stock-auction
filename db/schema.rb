@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_15_141517) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_17_205104) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -73,8 +73,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_15_141517) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status", default: 0
+    t.integer "user_player_id"
+    t.float "offer", default: 0.0
     t.index ["approver_user_id"], name: "index_lots_on_approver_user_id"
     t.index ["register_user_id"], name: "index_lots_on_register_user_id"
+    t.index ["user_player_id"], name: "index_lots_on_user_player_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -97,4 +100,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_15_141517) do
   add_foreign_key "auction_items", "lots"
   add_foreign_key "lots", "users", column: "approver_user_id"
   add_foreign_key "lots", "users", column: "register_user_id"
+  add_foreign_key "lots", "users", column: "user_player_id"
 end

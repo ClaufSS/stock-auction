@@ -3,6 +3,7 @@ class LotsController < ApplicationController
   before_action :require_admin, only: [:new, :create]
   before_action :require_creator, only: [:add, :remove]
   before_action :require_different_admin, only: [:approve]
+  before_action :require_user_common, only: [:bid]
 
 
   def index
@@ -64,6 +65,23 @@ class LotsController < ApplicationController
     redirect_to lot, notice: 'Lote aprovado com sucesso!'
   end
 
+  def bid
+    lot = Lot.find(params[:id])
+    user_offer = params[:offer].to_f
+
+    if (lot.offer + lot.min_bid) < user_offer
+      lot.user_player_id = current_user.id
+      lot.offer = user_offer
+      lot.save!
+
+      return redirect_to lot_path(lot)
+    end
+
+    flash[:notice] = "Valor de oferta abaixo de mínimo!"
+    redirect_to lot_path(lot)
+  end
+
+
   private
 
   def require_different_admin
@@ -81,6 +99,12 @@ class LotsController < ApplicationController
     if lot.register_user != current_user
       flash[:alert] = "Ação não permitida!"
       redirect_to root_path
+    end
+  end
+
+  def require_user_common
+    if current_user.admin?
+      redirect_to(root_path, notice: "Ação não permitida!")
     end
   end
 end
