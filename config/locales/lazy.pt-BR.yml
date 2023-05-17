@@ -9,6 +9,6 @@ pt-BR:
     
     status_track:
       pending: 'Aguardando aprovação'
-      running: 'Em disputa'
+      approved: 'Em disputa'
       canceled: 'Cancelado'
       closed: 'Encerrado'

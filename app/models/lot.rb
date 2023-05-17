@@ -8,5 +8,11 @@ class Lot < ApplicationRecord
   validates :start_date, :end_date, comparison: {greater_than: 1.day.from_now.to_date}
   validates :end_date, comparison: {greater_than: :start_date}
 
-  enum :status, {pending: 0, running: 1, canceled: 2, closed: 3}
+  enum :status, {pending: 0, approved: 1, canceled: 2}
+
+  scope :running, -> {
+    where('status = ? AND ? BETWEEN start_date AND end_date', 1, Time.current)
+  }
+
+  scope :scheduled, -> {where('status = ? AND start_date > ?', 1, Time.current)}
 end

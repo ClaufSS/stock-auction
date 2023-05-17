@@ -19,7 +19,7 @@ describe 'Administrador cria um lote' do
       )
 
       login_as(user)
-      lot.running!
+      lot.approved!
       visit lot_path(lot)
 
       expect(page).not_to have_content 'Adicionar itens'

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   devise_for :users
   
-  root to: 'home#index'
+  root to: 'lots#index'
 
   resources :auction_items, only: [:show, :new, :create]
   resources :lots, only: [:show, :new, :create] do

@@ -5,6 +5,11 @@ class LotsController < ApplicationController
   before_action :require_different_admin, only: [:approve]
 
 
+  def index
+    @lots_running = Lot.running
+    @lots_scheduled = Lot.scheduled
+  end
+
   def show
     @lot = Lot.find(params[:id])
     @auction_item_opts = AuctionItem.where(lot: nil).collect {|item|
@@ -53,7 +58,7 @@ class LotsController < ApplicationController
     lot = Lot.find(params[:id])
 
     lot.approver_user = current_user
-    lot.running!
+    lot.approved!
     lot.save
 
     redirect_to lot, notice: 'Lote aprovado com sucesso!'

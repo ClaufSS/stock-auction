@@ -208,6 +208,71 @@ auction_item = AuctionItem.new(
 attach_img.call(auction_item, "435223z.jpg")
 auction_item.save!
 
+auction_item = AuctionItem.new(
+  name: "Notebook",
+  description: "Notebook de alta performance com processador Intel Core i7",
+  weight: "1800",
+  width: "35",
+  height: "25",
+  depth: "2",
+  category_item: eletronic
+)
+
+attach_img.call(auction_item, "generic-laptop-mrkwx98-600.jpg")
+auction_item.save
+
+auction_item = AuctionItem.new(
+  name: "Escultura em Madeira",
+  description: "Escultura única em madeira maciça, esculpida à mão",
+  weight: "5000",
+  width: "40",
+  height: "60",
+  depth: "30",
+  category_item: fine_art
+)
+
+attach_img.call(auction_item, "banco-ave-741feitoamao_mg_8.jpg")
+auction_item.save
+
+auction_item = AuctionItem.new(
+  name: "Mesa de Centro",
+  description: "Mesa de centro moderna em vidro temperado",
+  weight: "1500",
+  width: "80",
+  height: "40",
+  depth: "80",
+  category_item: decoration
+)
+
+attach_img.call(auction_item, "1xg.jpg")
+auction_item.save
+
+auction_item = AuctionItem.new(
+  name: "Teclado MIDI",
+  description: "Teclado controlador MIDI com pads e knobs para produção musical",
+  weight: "2500",
+  width: "90",
+  height: "15",
+  depth: "25",
+  category_item: musical_instrument
+)
+
+attach_img.call(auction_item, "699cc265d4.jpg")
+auction_item.save
+
+auction_item = AuctionItem.new(
+  name: "Pintura a Óleo",
+  description: "Pintura clássica a óleo, retratando uma paisagem montanhosa",
+  weight: "3000",
+  width: "80",
+  height: "60",
+  depth: "5",
+  category_item: fine_art
+)
+
+attach_img.call(auction_item, "pintura-a-oleo-quadro-8-ensaio-sobre-atena-original.jpg")
+auction_item.save
+
 ####################################################
 # Lotes de item
 
