@@ -74,7 +74,7 @@ describe 'Administrador aprova lote' do
     expect(page).to have_content 'Lote aprovado com sucesso!'
     expect(current_path).to eq lot_path(lot)
     expect(page).not_to have_button 'Aprovar Lote'
-    expect(page).to have_content 'Status: Em disputa'
+    expect(page).to have_content 'Status: Aprovado'
   end
 
   it 'não deve poder aprovar um lote seu' do

@@ -7,9 +7,9 @@ pt-BR:
     new:
       register: Registrar
     
-    status_track:
-      pending: 'Aguardando aprovação'
-      approved: 'Em disputa'
+    status_map:
+      pending: 'Pendente'
+      approved: 'Aprovado'
       canceled: 'Cancelado'
       closed: 'Encerrado'
 

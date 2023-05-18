@@ -1,6 +1,6 @@
 class LotsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
-  before_action :require_admin, only: [:new, :create]
+  before_action :require_admin, only: [:new, :create, :approve, :expired, :cancel, :close]
   before_action :require_creator, only: [:add, :remove]
   before_action :require_different_admin, only: [:approve]
   before_action :require_user_common, only: [:bid]
@@ -79,6 +79,36 @@ class LotsController < ApplicationController
 
     flash[:notice] = "Valor de oferta abaixo de mínimo!"
     redirect_to lot_path(lot)
+  end
+
+  def expired
+    @expired_lots = Lot.expired
+  end
+
+  def cancel
+    lot = Lot.find(params[:id])
+
+    unless lot.user_player
+      lot.auction_items.clear
+      lot.canceled!
+
+      return redirect_to lot_path(lot), notice: 'Lote cancelado com sucesso!'
+    end
+
+    redirect_to lot_path(lot), notice: 'Este lote tem ofertas, deve ser encerrado.'
+  end
+
+  def close
+    lot = Lot.find(params[:id])
+
+    if lot.user_player
+      lot.auction_items.clear
+      lot.closed!
+
+      return redirect_to lot_path(lot), notice: 'Lote encerrado com sucesso!'
+    end
+
+    redirect_to lot_path(lot), notice: 'Este lote não tem ofertas, deve ser cancelado.'
   end
 
 

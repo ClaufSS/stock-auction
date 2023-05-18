@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 
-describe 'Usuários e visitantes vêem lotes' do
+describe 'Página especial para lotes expirados' do
   include ActiveSupport::Testing::TimeHelpers
-  
-  
+
+
   before :each do
     attach_img = ->(item, filename) {
       item.photo.attach(
@@ -13,6 +13,13 @@ describe 'Usuários e visitantes vêem lotes' do
         content_type: 'image/png'
       )
     }
+
+    ######## User
+    user = User.create!(
+      cpf: '93892321043',
+      email: 'gasparzinho@gmail.com',
+      password: 'f4k3p455w0rd'
+    )
 
     ######## Admins
     creator = User.create!(
@@ -43,7 +50,7 @@ describe 'Usuários e visitantes vêem lotes' do
     ######### Lots for tests
     
     travel_to 1.week.ago do
-      @lot_closed = Lot.create!(
+      @without_offer_lot = Lot.create!(
         code: 'eLe110',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
@@ -65,27 +72,15 @@ describe 'Usuários e visitantes vêem lotes' do
       
       attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
       auction_item.save!
-      auction_item.lot = @lot_closed
-      
-      auction_item = AuctionItem.new(
-        name: "Notebook",
-        description: "Notebook de alta performance com processador Intel Core i7",
-        weight: "1800",
-        width: "35",
-        height: "25",
-        depth: "2",
-        category_item: eletronic
-      )
-      
-      attach_img.call(auction_item, "generic-laptop-mrkwx98-600.jpg")
-      auction_item.save
-      auction_item.lot = @lot_closed
+      auction_item.lot = @without_offer_lot
 
-      @lot_closed.save!
+      @without_offer_lot.approver_user = approver
+      @without_offer_lot.approved!
+      @without_offer_lot.save!
     end
 
-    travel_to 2.days.ago do
-      @lot_running = Lot.create!(
+    travel_to 1.week.ago do
+      @with_offer_lot = Lot.create!(
         code: '000art',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
@@ -107,25 +102,13 @@ describe 'Usuários e visitantes vêem lotes' do
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
       auction_item.save!
-      auction_item.lot = @lot_running
-      
-      auction_item = AuctionItem.new(
-        name: "Escultura em Madeira",
-        description: "Escultura única em madeira maciça, esculpida à mão",
-        weight: "5000",
-        width: "40",
-        height: "60",
-        depth: "30",
-        category_item: fine_art
-      )
-      
-      attach_img.call(auction_item, "banco-ave-741feitoamao_mg_8.jpg")
-      auction_item.save
-      auction_item.lot = @lot_running
+      auction_item.lot = @with_offer_lot
 
-      @lot_running.approver_user = approver
-      @lot_running.approved!
-      @lot_running.save!
+      @with_offer_lot.approver_user = approver
+      @with_offer_lot.approved!
+      @with_offer_lot.user_player = user
+      @with_offer_lot.offer = 101
+      @with_offer_lot.save!
     end
 
     travel_to 1.week.from_now do
@@ -152,20 +135,6 @@ describe 'Usuários e visitantes vêem lotes' do
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
       auction_item.save!
       auction_item.lot = @lot_scheduled
-      
-      auction_item = AuctionItem.new(
-        name: "Guitarra Elétrica",
-        description: "Guitarra elétrica de alta qualidade, perfeita para performances ao vivo",
-        weight: "3500",
-        width: "40",
-        height: "100",
-        depth: "10",
-        category_item: musical_instrument
-      )
-      
-      attach_img.call(auction_item, "7899871608841-1.jpg")
-      auction_item.save!
-      auction_item.lot = @lot_scheduled
 
       @lot_scheduled.approver_user = approver
       @lot_scheduled.approved!
@@ -174,36 +143,67 @@ describe 'Usuários e visitantes vêem lotes' do
   end
 
 
-  it 'com sucesso' do
-    visit root_path
+  context 'link é visto' do
+    it 'por administrador' do
+      admin = User.create!(
+        cpf: '25664836040',
+        email: 'adalbertojr@leilaodogalpao.com.br',
+        password: 'f4k3p455w0rd'
+      )
 
-    expect(page).to have_link "#{@lot_running.code}"
-  end
+      login_as(admin)
+      visit root_path
 
-  it 'separados por, em andamento e futuros' do
-    visit root_path
-
-    lots_running_node = page
-      .find('section/div', text: 'Lotes em disputa')
-    
-    lots_scheduled_node = page
-      .find('section/div', text: 'Lotes agendados')
-    
-
-    within lots_running_node do
-      expect(page).to have_link "#{@lot_running.code}"
-      expect(page).not_to have_link "#{@lot_scheduled.code}"
+      within 'header nav' do
+        expect(page).to have_link 'Lotes expirados'
+      end  
     end
 
-    within lots_scheduled_node do
-      expect(page).to have_link "#{@lot_scheduled.code}"
-      expect(page).not_to have_link "#{@lot_running.code}"
+    it 'apenas para administradores' do
+      user = User.create!(
+        cpf: '99204907096',
+        email: 'geovana@gmail.com',
+        password: 'f4k3p455w0rd'
+      )
+
+      login_as(user)
+      visit root_path
+
+      within 'header nav' do
+        expect(page).not_to have_link 'Lotes expirados'
+      end  
     end
   end
 
-  it 'e não deve mostrar lotes vencidos' do
+  it 'a partir da tela inicial' do
+    admin = User.create!(
+      cpf: '25664836040',
+      email: 'adalbertojr@leilaodogalpao.com.br',
+      password: 'f4k3p455w0rd'
+    )
+
+    login_as(admin)
     visit root_path
 
-    expect(page).not_to have_link "#{@lot_closed.code}"
+    within 'header nav' do
+      click_on 'Lotes expirados'
+    end
+
+    expect(current_path).to eq expired_lots_path
+    expect(page).to have_link "#{@without_offer_lot.code}"
+  end
+
+  it 'não deve ter lotes em adamento ou futuros' do
+    admin = User.create!(
+      cpf: '25664836040',
+      email: 'adalbertojr@leilaodogalpao.com.br',
+      password: 'f4k3p455w0rd'
+    )
+
+    login_as(admin)
+    visit expired_lots_path
+
+    #expect(page).not_to have_link "#{@running_lot.code}"
+    expect(page).not_to have_link "#{@lot_scheduled.code}"
   end
 end

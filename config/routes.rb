@@ -12,5 +12,8 @@ Rails.application.routes.draw do
     post 'remove', on: :member
     post 'approve', on: :member
     post 'bid', on: :member
+    post 'cancel', on: :member
+    post 'close', on: :member
+    get 'expired', on: :collection
   end
 end

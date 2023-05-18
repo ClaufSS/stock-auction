@@ -2,6 +2,9 @@ require 'rails_helper'
 
 
 describe 'Usuário faz um lance' do
+  include ActiveSupport::Testing::TimeHelpers
+
+  
   before :each do
     attach_img = ->(item, filename) {
       item.photo.attach(

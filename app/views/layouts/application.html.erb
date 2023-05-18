@@ -30,6 +30,10 @@
         <% if current_user&.admin? %>
           <%= link_to "Novo lote", new_lot_path %>
         <% end %>
+
+        <% if current_user&.admin? %>
+          <%= link_to "Lotes expirados", expired_lots_path %>
+        <% end %>
       </nav>
 
       <div>

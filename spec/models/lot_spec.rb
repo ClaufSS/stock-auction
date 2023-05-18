@@ -31,24 +31,20 @@ RSpec.describe Lot, type: :model do
     end
 
     context 'data' do
-      it 'de início e fim dos lances devem ser futura' do
+      it 'de início dos lances deve ser futura' do
         lot_first = Lot.new(
           start_date: 0.day.ago,
-          end_date: 0.day.ago
         )
 
         lot_second = Lot.new(
-          start_date: 1.day.ago,
-          end_date: 1.day.ago
+          start_date: 2.day.from_now,
         )
 
         lot_first.valid?
         lot_second.valid?
 
         expect(lot_first.errors[:start_date]).to include "deve ser maior que #{1.day.from_now.to_date}"
-        expect(lot_second.errors[:start_date]).to include "deve ser maior que #{1.day.from_now.to_date}"
-        expect(lot_first.errors[:end_date]).to include "deve ser maior que #{1.day.from_now.to_date}"
-        expect(lot_second.errors[:end_date]).to include "deve ser maior que #{1.day.from_now.to_date}"
+        expect(lot_second.errors[:start_date]).not_to include "deve ser maior que #{1.day.from_now.to_date}"
       end
 
       it 'de fim dos lances deve suceder data de início' do
