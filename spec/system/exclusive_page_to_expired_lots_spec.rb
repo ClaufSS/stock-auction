@@ -71,8 +71,8 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-      auction_item.save!
       auction_item.lot = @without_offer_lot
+      auction_item.save!
 
       @without_offer_lot.approver_user = approver
       @without_offer_lot.approved!
@@ -101,8 +101,8 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.save!
       auction_item.lot = @with_offer_lot
+      auction_item.save!
 
       @with_offer_lot.approver_user = approver
       @with_offer_lot.approved!
@@ -133,12 +133,42 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.save!
       auction_item.lot = @lot_scheduled
+      auction_item.save!
 
       @lot_scheduled.approver_user = approver
       @lot_scheduled.approved!
       @lot_scheduled.save!
+    end
+
+    travel_to 3.days.ago do
+      @lot_running = Lot.create!(
+        code: 'MUS248',
+        start_date: 1.day.from_now,
+        end_date: 5.days.from_now,
+        start_price: 100,
+        min_bid: 2,
+        register_user: creator
+      )
+
+      ######### Musical instruments
+      auction_item = AuctionItem.new(
+        name: "Guitarra Elétrica",
+        description: "Guitarra elétrica de alta qualidade, perfeita para performances ao vivo",
+        weight: "3500",
+        width: "40",
+        height: "100",
+        depth: "10",
+        category_item: musical_instrument
+      )
+      
+      attach_img.call(auction_item, "7899871608841-1.jpg")
+      auction_item.lot = @lot_running
+      auction_item.save!
+
+      @lot_running.approver_user = approver
+      @lot_running.approved!
+      @lot_running.save!
     end
   end
 
@@ -203,7 +233,7 @@ describe 'Página especial para lotes expirados' do
     login_as(admin)
     visit expired_lots_path
 
-    #expect(page).not_to have_link "#{@running_lot.code}"
+    expect(page).not_to have_link "#{@lot_running.code}"
     expect(page).not_to have_link "#{@lot_scheduled.code}"
   end
 end

@@ -3,7 +3,7 @@ class LotsController < ApplicationController
   before_action :require_admin, only: [:new, :create, :approve, :expired, :cancel, :close]
   before_action :require_creator, only: [:add, :remove]
   before_action :require_different_admin, only: [:approve]
-  before_action :require_user_common, only: [:bid]
+  before_action :require_user_common, only: [:bid, :conquered]
 
 
   def index
@@ -13,6 +13,7 @@ class LotsController < ApplicationController
 
   def show
     @lot = Lot.find(params[:id])
+
     @auction_item_opts = AuctionItem.where(lot: nil).collect {|item|
       [item.full_description, item.id]
     }
@@ -102,13 +103,16 @@ class LotsController < ApplicationController
     lot = Lot.find(params[:id])
 
     if lot.user_player
-      lot.auction_items.clear
       lot.closed!
 
       return redirect_to lot_path(lot), notice: 'Lote encerrado com sucesso!'
     end
 
     redirect_to lot_path(lot), notice: 'Este lote não tem ofertas, deve ser cancelado.'
+  end
+
+  def conquered
+    @conquered_lots = current_user.lots
   end
 
 

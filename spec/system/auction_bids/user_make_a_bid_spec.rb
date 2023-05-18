@@ -67,8 +67,8 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.save!
       auction_item.lot = @lot_running
+      auction_item.save!
       
       auction_item = AuctionItem.new(
         name: "Escultura em Madeira",
@@ -81,8 +81,8 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "banco-ave-741feitoamao_mg_8.jpg")
-      auction_item.save
       auction_item.lot = @lot_running
+      auction_item.save!
 
       @lot_running.approver_user = approver
       @lot_running.approved!
@@ -111,8 +111,8 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.save!
       auction_item.lot = @lot_scheduled
+      auction_item.save!
       
       auction_item = AuctionItem.new(
         name: "Guitarra Elétrica",
@@ -125,8 +125,8 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "7899871608841-1.jpg")
-      auction_item.save!
       auction_item.lot = @lot_scheduled
+      auction_item.save!
 
       @lot_scheduled.approver_user = approver
       @lot_scheduled.approved!
@@ -162,7 +162,7 @@ describe 'Usuário faz um lance' do
     expect(page).not_to have_button 'Fazer oferta'
   end
 
-  it 'e não deve ser um lote agendado' do
+  it 'e não pode ser em um lote agendado' do
     login_as(@user)
 
     visit lot_path(@lot_scheduled)

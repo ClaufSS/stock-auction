@@ -64,8 +64,8 @@ describe 'Usuários e visitantes vêem lotes' do
       )
       
       attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-      auction_item.save!
       auction_item.lot = @lot_closed
+      auction_item.save!
       
       auction_item = AuctionItem.new(
         name: "Notebook",
@@ -78,8 +78,8 @@ describe 'Usuários e visitantes vêem lotes' do
       )
       
       attach_img.call(auction_item, "generic-laptop-mrkwx98-600.jpg")
-      auction_item.save
       auction_item.lot = @lot_closed
+      auction_item.save!
 
       @lot_closed.save!
     end
@@ -106,8 +106,8 @@ describe 'Usuários e visitantes vêem lotes' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.save!
       auction_item.lot = @lot_running
+      auction_item.save!
       
       auction_item = AuctionItem.new(
         name: "Escultura em Madeira",
@@ -120,8 +120,8 @@ describe 'Usuários e visitantes vêem lotes' do
       )
       
       attach_img.call(auction_item, "banco-ave-741feitoamao_mg_8.jpg")
-      auction_item.save
       auction_item.lot = @lot_running
+      auction_item.save!
 
       @lot_running.approver_user = approver
       @lot_running.approved!
@@ -150,8 +150,8 @@ describe 'Usuários e visitantes vêem lotes' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.save!
       auction_item.lot = @lot_scheduled
+      auction_item.save!
       
       auction_item = AuctionItem.new(
         name: "Guitarra Elétrica",
@@ -164,8 +164,8 @@ describe 'Usuários e visitantes vêem lotes' do
       )
       
       attach_img.call(auction_item, "7899871608841-1.jpg")
-      auction_item.save!
       auction_item.lot = @lot_scheduled
+      auction_item.save!
 
       @lot_scheduled.approver_user = approver
       @lot_scheduled.approved!
@@ -201,7 +201,7 @@ describe 'Usuários e visitantes vêem lotes' do
     end
   end
 
-  it 'e não deve mostrar lotes vencidos' do
+  it 'e não deve mostrar lotes expirados' do
     visit root_path
 
     expect(page).not_to have_link "#{@lot_closed.code}"

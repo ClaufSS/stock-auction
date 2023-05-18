@@ -5,6 +5,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :lots, class_name: "Lot", foreign_key: "user_player_id"
+
   
   validates :cpf, presence: true
   validates :cpf, :email, uniqueness: true

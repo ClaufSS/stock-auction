@@ -15,5 +15,6 @@ Rails.application.routes.draw do
     post 'cancel', on: :member
     post 'close', on: :member
     get 'expired', on: :collection
+    get 'conquered', on: :collection
   end
 end

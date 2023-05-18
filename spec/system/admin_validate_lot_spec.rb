@@ -70,8 +70,8 @@ describe 'Administrador inspeciona um lote expirado' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.save!
       auction_item.lot = @not_approved_lot
+      auction_item.save!
 
       @not_approved_lot.save!
     end
@@ -99,8 +99,8 @@ describe 'Administrador inspeciona um lote expirado' do
       )
       
       attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-      auction_item.save!
       auction_item.lot = @without_offer_lot
+      auction_item.save!
 
       @without_offer_lot.approver_user = approver
       @without_offer_lot.approved!
@@ -129,8 +129,8 @@ describe 'Administrador inspeciona um lote expirado' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.save!
       auction_item.lot = @with_offer_lot
+      auction_item.save!
 
       @with_offer_lot.approver_user = approver
       @with_offer_lot.approved!
