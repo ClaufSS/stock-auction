@@ -16,7 +16,11 @@
 
 * [CRUD](#crud)
 
-* [Informações úteis sobre os modelos](#informações-úteis-sobre-os-modelos)
+* [Informações úteis sobre a app](#informações-úteis-sobre-a-app)
+
+  * [Usuários](#usuários)
+  * [Imagens](#imagens)
+  * [Dinâmica](#dinâmica)
 
 * [Orientações sobre uso](#orientações-sobre-uso)
 
@@ -85,14 +89,16 @@ A modelagem do banco de dados possui seguinte estrutura:
 ### Item de leilão
 
 :heavy_check_mark: Podem ser cadastrados por adiministrador a partir de formulário na tela 'Novo item'
+
 :heavy_check_mark: Podem ser acessados a partir de lista na página do lote de itens
 
 ### Lote de itens
 
 :heavy_check_mark: Podem ser cadastrados por adiministrador a partir de formulário na tela 'Novo lote'
+
 :heavy_check_mark: Podem ser acessados a partir de diversas páginas a depender do status
 
-## Informações úteis sobre os modelos
+## Informações úteis sobre a app
 
 ### Usuários
 Se você optou por carregar os modelos pré-definidos é útil saber que no meio disso há usuários, tanto regulares quanto administradores, e que para fins de praticidade todos compartilham da mesma senha (12345678).
@@ -117,6 +123,13 @@ Se você optou por carregar os modelos pré-definidos é útil saber que no meio
 
 ### Imagens
 Há dentro do diretório `/public` uma pasta chamada 'photo_items' populado por imagens. Ela é útil para criar os modelos pré-definidos.
+
+### Dinâmica
+Dentre os modelos de lotes há um deles com data e hora de início e fim ajustados para corresponder ao momento em que o arquivo com os modelos pré-definidos é carregado, sendo que, a data e hora de encerramento é apenas 8 min afrente.
+
+Isso é útil para explorar a dinâmica do app, no sentido de que, é uma verificação ao vivo do funcionamento da aplicação.
+
+Se após ter carregado os modelos partir para testar o app, verá um lote cujo código é `Y7G5P1`. Tente fazer uma oferta e esperar expirar. Em seguida, entre como administrador e encerre o lote e por último entre de novo com a conta de usuário e procure pelo lote em `Meus lotes`.
 
 ## Orientações sobre uso
 
