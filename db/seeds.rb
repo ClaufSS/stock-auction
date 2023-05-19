@@ -5,43 +5,43 @@
 User.create!(
   cpf: "54690229007",
   email: "juliao@gmail.com",
-  password: "juliao<3Leilao"
+  password: "12345678"
 )
 
 User.create!(
   cpf: "33415051056",
-  email: "marcossts@gmail.com",
-  password: "mARCOS12345"
+  email: "marcos@gmail.com",
+  password: "12345678"
 )
 
 User.create!(
   cpf: "43380443069",
   email: "silvaneide@gmail.com",
-  password: "neide2023"
+  password: "12345678"
 )
 
 User.create!(
   cpf: "39525559084",
   email: "silvanei@gmail.com",
-  password: "Silvan31"
+  password: "12345678"
 )
 
 User.create!(
   cpf: "49191314020",
-  email: "omonstrodoleilao@gmail.com",
-  password: "OGrandeArrematador00"
+  email: "carlos@gmail.com",
+  password: "12345678"
 )
 
 User.create!(
   cpf: "96113990060",
-  email: "antonioleiloeiro@leilaodogalpao.com.br",
-  password: "Antonio1234"
+  email: "jose@leilaodogalpao.com.br",
+  password: "12345678"
 )
 
 User.create!(
   cpf: "14392097072",
   email: "victor@leilaodogalpao.com.br",
-  password: "Vitinho2023"
+  password: "12345678"
 )
 
 ####################################################
@@ -336,7 +336,7 @@ eletronics = AuctionItem.where(category_item: eletronic)
 lot_two = Lot.new(
   code: 'Y7G5P1',
   start_date: 0.day.from_now,
-  end_date: 0.day.from_now + 15.minutes,
+  end_date: 0.day.from_now + 8.minutes,
   start_price: 260,
   min_bid: 25,
   register_user: admin_antonio,

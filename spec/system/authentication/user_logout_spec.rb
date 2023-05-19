@@ -28,5 +28,12 @@ describe 'Usuário sai da conta' do
     within 'nav' do
       click_on 'Sair'
     end
+
+    expect(current_path).to eq root_path
+    
+    within 'header nav' do
+      expect(page).to have_link 'Entrar'
+      expect(page).not_to have_button 'Sair'
+    end
   end
 end

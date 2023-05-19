@@ -1,8 +1,12 @@
 
 <section>
-  <h2></h2>
+  <h2>Lotes Expirados</h2>
 
   <div>
     <%= render @expired_lots %>
+
+    <% if @expired_lots.empty? %>
+      <p>Não há lotes expirados para validar</p>
+    <% end %>
   </div>
 </section>

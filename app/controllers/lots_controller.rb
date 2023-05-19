@@ -70,7 +70,7 @@ class LotsController < ApplicationController
     lot = Lot.find(params[:id])
     user_offer = params[:offer].to_f
 
-    if (lot.offer + lot.min_bid) < user_offer
+    if lot.running? && (lot.min_offer < user_offer)
       lot.user_player_id = current_user.id
       lot.offer = user_offer
       lot.save!
@@ -90,7 +90,6 @@ class LotsController < ApplicationController
     lot = Lot.find(params[:id])
 
     unless lot.user_player
-      lot.auction_items.clear
       lot.canceled!
 
       return redirect_to lot_path(lot), notice: 'Lote cancelado com sucesso!'
@@ -112,7 +111,7 @@ class LotsController < ApplicationController
   end
 
   def conquered
-    @conquered_lots = current_user.lots
+    @conquered_lots = current_user.lots.where(status: :closed)
   end
 
 

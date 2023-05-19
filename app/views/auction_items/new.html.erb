@@ -4,41 +4,49 @@
     <div>
       <%= f.label :name %>
       <%= f.text_field :name %>
+      <%= field_errors_msgs(@item, :name) %>
     </div>
 
     <div>
       <%= f.label :description %>
       <%= f.text_area :description %>
+      <%= field_errors_msgs(@item, :description) %>
     </div>
 
     <div>
       <%= f.label :weight %>
       <%= f.number_field :weight %>
+      <%= field_errors_msgs(@item, :weight) %>
     </div>
 
     <div>
       <%= f.label :width %>
       <%= f.number_field :width %>
+      <%= field_errors_msgs(@item, :width) %>
     </div>
 
     <div>
       <%= f.label :height %>
       <%= f.number_field :height %>
+      <%= field_errors_msgs(@item, :height) %>
     </div>
 
     <div>
       <%= f.label :depth %>
       <%= f.number_field :depth %>
+      <%= field_errors_msgs(@item, :depth) %>
     </div>
 
     <div>
       <%= f.label :category_item_id %>
       <%= f.collection_select :category_item_id, @categories, :id, :description %>
+      <%= field_errors_msgs(@item, :category_item_id) %>
     </div>
 
     <div>
       <%= f.label :photo %>
       <%= f.file_field :photo %>
+      <%= field_errors_msgs(@item, :photo) %>
     </div>
 
     <div>

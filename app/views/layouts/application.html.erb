@@ -13,15 +13,7 @@
     <header>
 
       <nav>
-        <% if user_signed_in? %>
-          <div>
-            <%= link_to 'Sair', root_path %>
-          </div>
-        <% else %>
-          <div>
-            <%= link_to 'Entrar', new_user_session_path %>
-          </div>
-        <% end %>
+        <%= link_to "Home", root_path %>
 
         <% if user_signed_in? && current_user.admin? %>
           <%= link_to "Novo item", new_auction_item_path %>
@@ -38,13 +30,23 @@
         <% if user_signed_in? && current_user.common? %>
           <%= link_to "Meus lotes", conquered_lots_path %>
         <% end %>
+
+        <% if user_signed_in? %>
+          <div>
+            <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
+          </div>
+        <% else %>
+          <div>
+            <%= link_to 'Entrar', new_user_session_path %>
+          </div>
+        <% end %>
       </nav>
 
-      <div>
-        <% if user_signed_in? && current_user.admin? %>
-          <p>(adm)</p>
-        <% end %>
-      </div>
+      <% if user_signed_in? %>
+        <div>
+          <p><%= current_user.email %> <%= '(adm)' if current_user.admin? %></p>
+        </div>
+      <% end %>
     </header>
 
     <div>

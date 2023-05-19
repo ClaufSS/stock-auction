@@ -9,6 +9,8 @@ class Lot < ApplicationRecord
   validates :start_date, comparison: {greater_than: :min_date_expected}, if: :not_persisted?
   validates :end_date, comparison: {greater_than: :start_date}, if: :not_persisted?
 
+  after_validation :clear_items, if: :canceled?
+
   enum :status, {pending: 0, approved: 1, canceled: 2, closed: 3}
 
   scope :running, -> {
@@ -32,6 +34,12 @@ class Lot < ApplicationRecord
     end_date < Time.current
   end
 
+  def min_offer
+    return start_price unless user_player
+
+    offer + min_bid
+  end
+
   private
 
   def not_persisted?
@@ -40,5 +48,9 @@ class Lot < ApplicationRecord
 
   def min_date_expected
     1.day.from_now.to_date
+  end
+
+  def clear_items
+    auction_items.clear
   end
 end

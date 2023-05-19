@@ -4,5 +4,9 @@
 
   <div>
     <%= render @conquered_lots %>
+
+    <% if @conquered_lots.empty? %>
+      <p>Você não tem lotes conquistados</p>
+    <% end %>
   </div>
 </section>

@@ -8,7 +8,7 @@
     <% end %>
   <% end %>
 
-  <% if @lot.expired? %>
+  <% if @lot.expired? && !@lot.canceled? && !@lot.closed? %>
     <% if @lot.user_player %>
       <%= button_to 'Encerrar Lote', close_lot_path(@lot) %>
     <% else %>

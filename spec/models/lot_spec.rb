@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Lot, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
+
   describe '#valid?' do
     context 'deve conter' do
       before :each do
@@ -114,5 +117,56 @@ RSpec.describe Lot, type: :model do
 
       expect(lot).to be_pending 
     end
+  end
+
+  it 'deve limpar itens após ser cancelado' do
+    attach_img = ->(item, filename) {
+      item.photo.attach(
+        io: File.open(Rails.root.join("public/photo_items/#{filename}")),
+        filename: filename,
+        content_type: 'image/png'
+      )
+    }
+    
+    creator = User.create!(
+      cpf: '83923678045',
+      email: 'roberto@leilaodogalpao.com.br',
+      password: 'f4k3p455w0rd'
+    )
+
+    musical_instrument = CategoryItem.create!(
+      description: "Musical instrument"
+    )
+
+    travel_to 1.week.from_now do
+      Lot.create!(
+        code: 'MUS248',
+        start_date: 1.day.from_now,
+        end_date: 3.days.from_now,
+        start_price: 100,
+        min_bid: 2,
+        register_user: creator
+      )
+    end
+
+    lot = Lot.find_by(code: 'MUS248')
+
+    auction_item = AuctionItem.new(
+      name: "Violão Acústico",
+      description: "Violão de cordas de aço, perfeito para músicos iniciantes",
+      weight: "1500",
+      width: "100",
+      height: "10",
+      depth: "40",
+      category_item: musical_instrument
+    )
+    
+    attach_img.call(auction_item, "-CG-162-C-1.jpg")
+    auction_item.lot = @lot_scheduled
+    auction_item.save!
+    lot.auction_items << auction_item
+    lot.canceled!
+
+    expect(lot.auction_items).to eq []
   end
 end

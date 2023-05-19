@@ -1,14 +1,21 @@
+
 <% if @lot.pending? & (@lot.register_user == current_user) %>
+
   <div class='add-item-area'>
     <p>Adicionar item</p>
 
-    <%= form_with url: add_lot_path do |f| %>
-      <%= f.select :item_id, options_for_select(@auction_item_opts) %>
-      <%= f.submit 'Adicionar' %>
+    <% if @auction_item_opts.any? %>
+      <%= form_with url: add_lot_path do |f| %>
+        <%= f.select :item_id, options_for_select(@auction_item_opts) %>
+        <%= f.submit 'Adicionar' %>
+      <% end %>
+    <% else %>
+
+      <div>
+        <p>Não há itens disponíveis para adicionar</p>
+      </div>
+
     <% end %>
-  </div>
-<% else %>
-  <div>
-    <p>Não há itens disponíveis para adicionar</p>
+
   </div>
 <% end %>

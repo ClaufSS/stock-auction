@@ -201,7 +201,7 @@ describe 'Usuário faz um lance' do
     expect(current_path).to eq lot_path(@lot_running)
 
     within '.bid-panel' do
-      expect(page).not_to have_content 'Oferta mínima: R$ 103,00'
+      expect(page).to have_content 'Oferta mínima: R$ 103,00'
     end
   end
 
