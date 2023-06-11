@@ -15,24 +15,11 @@ describe 'Usuário faz um lance' do
     }
 
     ######## Admins
-    creator = User.create!(
-      cpf: '83923678045',
-      email: 'roberto@leilaodogalpao.com.br',
-      password: 'f4k3p455w0rd'
-    )
-
-    approver = User.create!(
-      cpf: '83349076050',
-      email: 'reidoleilao@leilaodogalpao.com.br',
-      password: 'f4k3p455w0rd'
-    )
+    creator = FactoryBot.create(:creator)
+    evaluator = FactoryBot.create(:evaluator)
 
     ######## User
-    @user = User.create!(
-      cpf: '03987777052',
-      email: 'rogerio@gmail.com',
-      password: 'f4k3p455w0rd'
-    )
+    @user = FactoryBot.create(:common_user)
 
     ######### Categories
     fine_art = CategoryItem.create!(
@@ -43,16 +30,16 @@ describe 'Usuário faz um lance' do
       description: "Musical instrument"
     )
 
-    ######### Lots for tests
+    ######### AuctionLots for tests
     
     travel_to 2.days.ago do
-      @lot_running = Lot.create!(
+      @lot_running = AuctionLot.create!(
         code: '000art',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
       
       ######### Arts
@@ -67,7 +54,7 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.lot = @lot_running
+      auction_item.auction_lot = @lot_running
       auction_item.save!
       
       auction_item = AuctionItem.new(
@@ -81,22 +68,21 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "banco-ave-741feitoamao_mg_8.jpg")
-      auction_item.lot = @lot_running
+      auction_item.auction_lot = @lot_running
       auction_item.save!
 
-      @lot_running.approver_user = approver
+      @lot_running.evaluator_user = evaluator
       @lot_running.approved!
-      @lot_running.save!
     end
 
     travel_to 1.week.from_now do
-      @lot_scheduled = Lot.create!(
+      @lot_scheduled = AuctionLot.create!(
         code: 'MUS248',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
 
       ######### Musical instruments
@@ -111,7 +97,7 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.lot = @lot_scheduled
+      auction_item.auction_lot = @lot_scheduled
       auction_item.save!
       
       auction_item = AuctionItem.new(
@@ -125,12 +111,11 @@ describe 'Usuário faz um lance' do
       )
       
       attach_img.call(auction_item, "7899871608841-1.jpg")
-      auction_item.lot = @lot_scheduled
+      auction_item.auction_lot = @lot_scheduled
       auction_item.save!
 
-      @lot_scheduled.approver_user = approver
+      @lot_scheduled.evaluator_user = evaluator
       @lot_scheduled.approved!
-      @lot_scheduled.save!
     end
   end
 
@@ -148,28 +133,28 @@ describe 'Usuário faz um lance' do
     end
 
     within '.bid-panel' do
-      expect(page).to have_content 'Oferta mínima: R$ 100,00'
-      expect(page).to have_field 'Oferta'
-      expect(page).to have_button 'Fazer oferta'
+      expect(page).to have_content 'Lance mínimo: R$ 100,00'
+      expect(page).to have_field 'Lance'
+      expect(page).to have_button 'Enviar Lance'
     end
   end
 
   it 'se estiver autenticado' do
-    visit lot_path(@lot_running)
+    visit auction_lot_path(@lot_running)
 
-    expect(page).not_to have_content 'Oferta mínima: R$ 100,00'
-    expect(page).not_to have_field 'Oferta'
-    expect(page).not_to have_button 'Fazer oferta'
+    expect(page).not_to have_content 'Lance mínimo: R$ 100,00'
+    expect(page).not_to have_field 'Lance'
+    expect(page).not_to have_button 'Enviar Lance'
   end
 
   it 'e não pode ser em um lote agendado' do
     login_as(@user)
 
-    visit lot_path(@lot_scheduled)
+    visit auction_lot_path(@lot_scheduled)
 
-    expect(page).not_to have_content 'Oferta mínima: R$ 100,00'
-    expect(page).not_to have_field 'Oferta'
-    expect(page).not_to have_button 'Fazer oferta'
+    expect(page).not_to have_content 'Lance mínimo: R$ 100,00'
+    expect(page).not_to have_field 'Lance'
+    expect(page).not_to have_button 'Enviar Lance'
   end
 
   it 'e não pode ser um adiministrador' do
@@ -181,27 +166,27 @@ describe 'Usuário faz um lance' do
 
     login_as(adm)
 
-    visit lot_path(@lot_running)
+    visit auction_lot_path(@lot_running)
 
-    expect(page).not_to have_content 'Oferta mínima: R$ 100,00'
-    expect(page).not_to have_field 'Oferta'
-    expect(page).not_to have_button 'Fazer oferta'
+    expect(page).not_to have_content 'Lance mínimo: R$ 100,00'
+    expect(page).not_to have_field 'Lance'
+    expect(page).not_to have_button 'Enviar Lance'
   end
 
   it 'com sucesso' do
     login_as(@user)
 
-    visit lot_path(@lot_running)
+    visit auction_lot_path(@lot_running)
 
     within '.bid-panel' do
-      fill_in 'Oferta',	with: "101"
-      click_on 'Fazer oferta'
+      fill_in 'Lance',	with: "101"
+      click_on 'Enviar Lance'
     end
 
-    expect(current_path).to eq lot_path(@lot_running)
+    expect(current_path).to eq auction_lot_path(@lot_running)
 
     within '.bid-panel' do
-      expect(page).to have_content 'Oferta mínima: R$ 103,00'
+      expect(page).to have_content 'Lance mínimo: R$ 103,00'
     end
   end
 
@@ -215,17 +200,15 @@ describe 'Usuário faz um lance' do
       password: 'f4k3p455w0rd'
     )
 
-    @lot_running.user_player_id = other_user
-    @lot_running.offer = 101
-    @lot_running.save!
+    @lot_running.bids.create(bid: 101, bidder: other_user)
 
-    visit lot_path(@lot_running)
+    visit auction_lot_path(@lot_running)
 
     within '.bid-panel' do
-      fill_in 'Oferta',	with: "102"
-      click_on 'Fazer oferta'
+      fill_in 'Lance',	with: "102"
+      click_on 'Enviar Lance'
     end
 
-    expect(page).to have_content 'Valor de oferta abaixo de mínimo!'
+    expect(page).to have_content 'Valor de lance abaixo de mínimo!'
   end
 end

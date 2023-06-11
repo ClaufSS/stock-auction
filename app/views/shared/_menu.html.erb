@@ -1,0 +1,21 @@
+
+<nav>
+  <%= link_to "Home", root_path %>
+
+  <% if user_signed_in? && current_user.admin? %>
+    <%= link_to "Novo item", new_auction_item_path %>
+  <% end %>
+
+  <% if user_signed_in? && current_user.admin? %>
+    <%= link_to "Novo lote", new_auction_lot_path %>
+  <% end %>
+
+  <% if user_signed_in? && current_user.admin? %>
+    <%= link_to "Lotes expirados", expired_auction_lots_path %>
+  <% end %>
+
+  <% if user_signed_in? && current_user.common? %>
+    <%= link_to "Meus lotes", conquered_auction_lots_path %>
+  <% end %>
+
+</nav>

@@ -10,7 +10,7 @@ en:
               unpermitted_chars: 'must contain only numbers'
               out_of_range: 'need to have 11 numbers'
         
-        lot:
+        auction_lot:
           attributes:
             code:
               wrong_length: 'must contain %{size} chars'

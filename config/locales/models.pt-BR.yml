@@ -9,7 +9,7 @@ pt-BR:
         one: 'Item de leilão'
         other: 'Itens de leilão'
 
-      lot:
+      auction_lot:
         one: Lote
         other: Lotes
 
@@ -30,16 +30,16 @@ pt-BR:
         category_item: Categoria
         category_item_id: Categoria
 
-      lot:
+      auction_lot:
         code: 'Código'
         start_date: 'Data de início'
         end_date: 'Data de encerramento'
         start_price: 'Preço inicial'
-        min_bid: 'Lance mínimo'
-        register_user: 'Usuário responsável pelo registro do lote'
-        register_user_id: 'Usuário responsável pelo registro do lote'
-        approver_user: 'Usuário responsável pela aprovação do lote'
-        approver_user_id: 'Usuário responsável pela aprovação do lote'
+        min_bid_diff: 'Lance mínimo'
+        creator_user: 'Usuário responsável pelo registro do lote'
+        creator_user_id: 'Usuário responsável pelo registro do lote'
+        evaluator_user: 'Usuário responsável pela aprovação do lote'
+        evaluator_user_id: 'Usuário responsável pela aprovação do lote'
     
     errors:
       models:
@@ -50,7 +50,7 @@ pt-BR:
               unpermitted_chars: 'deve conter apenas números'
               out_of_range: 'deve conter 11 números'
         
-        lot:
+        auction_lot:
           attributes:
             code:
               wrong_length: 'deve conter %{size} caracteres'

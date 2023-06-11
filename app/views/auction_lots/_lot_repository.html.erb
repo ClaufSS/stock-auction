@@ -1,0 +1,15 @@
+<details>
+  <summary>Composição do lote</summary>
+
+  <ul>
+    <% @lot.auction_items.each do |item| %>
+      <li>
+        <p><%= link_to item.full_description, auction_item_path(item) %></p>
+        
+        <% if @lot.pending? %>
+          <%= button_to 'Remover', remove_auction_lot_path(@lot, item_id: item) %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</details>

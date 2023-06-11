@@ -1,5 +1,5 @@
 module AuctionItemHelper
-  def format_dimension(item)
+  def formated_dimension(item)
     sizes = item.slice(:width, :height, :depth)
     
     sizes.map do |attr, value|
@@ -7,6 +7,6 @@ module AuctionItemHelper
       sizes[attr] = number_with_precision(value, precision: precision)
     end
 
-    tag.p "Dimensão (cm): #{sizes[:width]} X #{sizes[:height]} X #{sizes[:depth]}"
+    "Dimensão (cm): #{sizes[:width]} X #{sizes[:height]} X #{sizes[:depth]}"
   end
 end

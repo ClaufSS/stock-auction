@@ -1,11 +1,13 @@
 require 'rails_helper'
 
+
 RSpec.describe User, type: :model do
   describe '#valid?' do
     it 'cpf deve ser fornecido' do
       user = User.new(
         email: 'roberto@leilaodogalpao.com.br',
-        password: 'f4k3p455w0rd')
+        password: 'f4k3p455w0rd'
+      )
       
       user.valid?
 

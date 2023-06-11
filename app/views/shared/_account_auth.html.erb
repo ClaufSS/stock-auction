@@ -1,0 +1,19 @@
+
+<div class=''>
+  <% unless devise_controller? %>
+    <div class='d-flex gap-3'>
+      <% if user_signed_in? %>
+
+        <p><%= current_user.email %> <%= '(adm)' if current_user.admin? %></p>
+        <%= button_to 'Sair', destroy_user_session_path, method: :delete, style: 'all: initial' %>
+
+      <% else %>
+
+        <p>Visitante</p>
+        <%= link_to 'Entrar', new_user_session_path %>
+        <%= link_to 'Cadastrar', new_user_registration_path %>
+
+      <% end %>
+    </div>
+  <% end %>
+</div>

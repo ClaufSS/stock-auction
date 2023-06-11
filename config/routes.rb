@@ -4,14 +4,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   devise_for :users
   
-  root to: 'lots#index'
+  root to: 'auction_lots#index'
 
   resources :auction_items, only: [:show, :new, :create]
-  resources :lots, only: [:show, :new, :create] do
+
+  resources :auction_lots, only: [:show, :new, :create] do
+    resources 'auction_bids', only: [:create], as: 'create_bids'
+
     post 'add', on: :member
     post 'remove', on: :member
     post 'approve', on: :member
-    post 'bid', on: :member
     post 'cancel', on: :member
     post 'close', on: :member
     get 'expired', on: :collection

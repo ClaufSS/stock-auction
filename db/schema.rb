@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_17_205104) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_30_005027) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.integer "record_id", null: false
-    t.integer "blob_id", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -34,9 +34,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_17_205104) do
   end
 
   create_table "active_storage_variant_records", force: :cascade do |t|
-    t.integer "blob_id", null: false
+    t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "auction_bids", force: :cascade do |t|
+    t.integer "auction_lot_id", null: false
+    t.integer "bidder_id", null: false
+    t.float "bid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["auction_lot_id"], name: "index_auction_bids_on_auction_lot_id"
+    t.index ["bidder_id"], name: "index_auction_bids_on_bidder_id"
   end
 
   create_table "auction_items", force: :cascade do |t|
@@ -51,33 +61,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_17_205104) do
     t.datetime "updated_at", null: false
     t.string "code"
     t.integer "status", default: 0
-    t.integer "lot_id"
+    t.integer "auction_lot_id"
+    t.index ["auction_lot_id"], name: "index_auction_items_on_auction_lot_id"
     t.index ["category_item_id"], name: "index_auction_items_on_category_item_id"
-    t.index ["lot_id"], name: "index_auction_items_on_lot_id"
+  end
+
+  create_table "auction_lots", force: :cascade do |t|
+    t.string "code"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.float "start_price"
+    t.float "min_bid_diff"
+    t.integer "status", default: 0
+    t.integer "creator_user_id", null: false
+    t.integer "evaluator_user_id"
+    t.integer "winner_bidder_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_user_id"], name: "index_auction_lots_on_creator_user_id"
+    t.index ["evaluator_user_id"], name: "index_auction_lots_on_evaluator_user_id"
+    t.index ["winner_bidder_id"], name: "index_auction_lots_on_winner_bidder_id"
   end
 
   create_table "category_items", force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "lots", force: :cascade do |t|
-    t.string "code"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.float "start_price"
-    t.float "min_bid"
-    t.integer "register_user_id", null: false
-    t.integer "approver_user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "status", default: 0
-    t.integer "user_player_id"
-    t.float "offer", default: 0.0
-    t.index ["approver_user_id"], name: "index_lots_on_approver_user_id"
-    t.index ["register_user_id"], name: "index_lots_on_register_user_id"
-    t.index ["user_player_id"], name: "index_lots_on_user_player_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -96,9 +105,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_17_205104) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "auction_bids", "auction_lots"
+  add_foreign_key "auction_bids", "users", column: "bidder_id"
+  add_foreign_key "auction_items", "auction_lots"
   add_foreign_key "auction_items", "category_items"
-  add_foreign_key "auction_items", "lots"
-  add_foreign_key "lots", "users", column: "approver_user_id"
-  add_foreign_key "lots", "users", column: "register_user_id"
-  add_foreign_key "lots", "users", column: "user_player_id"
+  add_foreign_key "auction_lots", "users", column: "creator_user_id"
+  add_foreign_key "auction_lots", "users", column: "evaluator_user_id"
+  add_foreign_key "auction_lots", "users", column: "winner_bidder_id"
 end

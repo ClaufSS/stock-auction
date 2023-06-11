@@ -7,51 +7,18 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <header>
-
-      <nav>
-        <%= link_to "Home", root_path %>
-
-        <% if user_signed_in? && current_user.admin? %>
-          <%= link_to "Novo item", new_auction_item_path %>
-        <% end %>
-
-        <% if user_signed_in? && current_user.admin? %>
-          <%= link_to "Novo lote", new_lot_path %>
-        <% end %>
-
-        <% if user_signed_in? && current_user.admin? %>
-          <%= link_to "Lotes expirados", expired_lots_path %>
-        <% end %>
-
-        <% if user_signed_in? && current_user.common? %>
-          <%= link_to "Meus lotes", conquered_lots_path %>
-        <% end %>
-
-        <% if user_signed_in? %>
-          <div>
-            <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
-          </div>
-        <% else %>
-          <div>
-            <%= link_to 'Entrar', new_user_session_path %>
-          </div>
-        <% end %>
-      </nav>
-
-      <% if user_signed_in? %>
-        <div>
-          <p><%= current_user.email %> <%= '(adm)' if current_user.admin? %></p>
-        </div>
-      <% end %>
+    <header class='d-flex w-100 p-2 mx-auto justify-content-between'>
+      <%= render 'shared/menu' %>
+      <%= render 'shared/account_auth' %>
     </header>
 
     <div>
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <p><%= notice %></p>
+      <p><%= alert %></p>
     </div>
     
     <main>

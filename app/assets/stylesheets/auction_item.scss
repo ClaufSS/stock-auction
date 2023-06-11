@@ -1,0 +1,12 @@
+
+.fit-img {
+  object-fit: cover;
+}
+
+.auction-item-width {
+  width: 75%;
+
+  @media (max-width: 768px) {
+    width: MIN(75%, 380px);
+  }
+}

@@ -11,7 +11,7 @@ describe 'Usuário sai da conta' do
     login_as(user)
     visit root_path
 
-    within 'nav' do
+    within 'header' do
       expect(page).to have_content 'Sair'
     end
   end
@@ -25,13 +25,13 @@ describe 'Usuário sai da conta' do
     login_as(user)
     visit root_path
 
-    within 'nav' do
+    within 'header' do
       click_on 'Sair'
     end
 
     expect(current_path).to eq root_path
     
-    within 'header nav' do
+    within 'header' do
       expect(page).to have_link 'Entrar'
       expect(page).not_to have_button 'Sair'
     end

@@ -58,9 +58,35 @@ describe 'Administrador registra pedido' do
     click_on 'Registrar'
 
     expect(page).to have_content 'Violão Customizado'
-    expect(page).to have_content 'Descrição: Um violão acústico único feito à mão com materiais de alta qualidade.'
+    expect(page).to have_content 'Um violão acústico único feito à mão com materiais de alta qualidade.'
     expect(page).to have_content 'Dimensão (cm): 45 X 100 X 10'
     expect(page).to have_content 'Peso (g): 2000'
+  end
+
+  it 'com iformações incorretas' do
+    user = User.create!(
+      cpf: '83923678045',
+      email: 'roberto@leilaodogalpao.com.br',
+      password: 'f4k3p455w0rd')
+
+    CategoryItem.create!(description: 'Instrumento musical')
+
+    login_as(user)
+    visit root_path
+
+    within 'nav' do
+      click_on 'Novo item'
+    end
+
+    within 'main form' do
+      fill_in 'Nome', with: 'Violão Customizado'
+      fill_in 'Largura', with: '45'
+      fill_in 'Profundidade', with: '10'
+    end
+
+    click_on 'Registrar'
+
+    expect(page).to have_content 'Alguns campos estão incorretos, revise-os.'
   end
 end
 

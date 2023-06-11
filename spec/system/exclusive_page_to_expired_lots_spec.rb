@@ -2,9 +2,6 @@ require 'rails_helper'
 
 
 describe 'Página especial para lotes expirados' do
-  include ActiveSupport::Testing::TimeHelpers
-
-
   before :each do
     attach_img = ->(item, filename) {
       item.photo.attach(
@@ -47,16 +44,16 @@ describe 'Página especial para lotes expirados' do
       description: "Musical instrument"
     )
 
-    ######### Lots for tests
+    ######### AuctionLots for tests
     
     travel_to 1.week.ago do
-      @without_offer_lot = Lot.create!(
+      @without_offer_lot = AuctionLot.create!(
         code: 'eLe110',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
 
       ######### Eletronics
@@ -71,22 +68,22 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-      auction_item.lot = @without_offer_lot
+      auction_item.auction_lot = @without_offer_lot
       auction_item.save!
 
-      @without_offer_lot.approver_user = approver
+      @without_offer_lot.evaluator_user = approver
       @without_offer_lot.approved!
       @without_offer_lot.save!
     end
 
     travel_to 1.week.ago do
-      @with_offer_lot = Lot.create!(
+      @with_offer_lot = AuctionLot.create!(
         code: '000art',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
       
       ######### Arts
@@ -101,24 +98,24 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.lot = @with_offer_lot
+      auction_item.auction_lot = @with_offer_lot
       auction_item.save!
 
-      @with_offer_lot.approver_user = approver
+      @with_offer_lot.evaluator_user = approver
       @with_offer_lot.approved!
-      @with_offer_lot.user_player = user
-      @with_offer_lot.offer = 101
+      @with_offer_lot.winner_bidder = user
+      @with_offer_lot.bids.create!(bidder: user, bid: 101)
       @with_offer_lot.save!
     end
 
     travel_to 1.week.from_now do
-      @lot_scheduled = Lot.create!(
+      @lot_scheduled = AuctionLot.create!(
         code: 'MUS248',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
 
       ######### Musical instruments
@@ -133,22 +130,22 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.lot = @lot_scheduled
+      auction_item.auction_lot = @lot_scheduled
       auction_item.save!
 
-      @lot_scheduled.approver_user = approver
+      @lot_scheduled.evaluator_user = approver
       @lot_scheduled.approved!
       @lot_scheduled.save!
     end
 
     travel_to 3.days.ago do
-      @lot_running = Lot.create!(
+      @lot_running = AuctionLot.create!(
         code: 'MUS248',
         start_date: 1.day.from_now,
         end_date: 5.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
 
       ######### Musical instruments
@@ -163,10 +160,10 @@ describe 'Página especial para lotes expirados' do
       )
       
       attach_img.call(auction_item, "7899871608841-1.jpg")
-      auction_item.lot = @lot_running
+      auction_item.auction_lot = @lot_running
       auction_item.save!
 
-      @lot_running.approver_user = approver
+      @lot_running.evaluator_user = approver
       @lot_running.approved!
       @lot_running.save!
     end
@@ -219,7 +216,7 @@ describe 'Página especial para lotes expirados' do
       click_on 'Lotes expirados'
     end
 
-    expect(current_path).to eq expired_lots_path
+    expect(current_path).to eq expired_auction_lots_path
     expect(page).to have_link "#{@without_offer_lot.code}"
   end
 
@@ -231,7 +228,7 @@ describe 'Página especial para lotes expirados' do
     )
 
     login_as(admin)
-    visit expired_lots_path
+    visit expired_auction_lots_path
 
     expect(page).not_to have_link "#{@lot_running.code}"
     expect(page).not_to have_link "#{@lot_scheduled.code}"

@@ -1,0 +1,21 @@
+
+<% if user_signed_in? && current_user.common? && @lot.running? %>
+
+  <div class='bid-panel'>
+    <p>Lance mínimo: <%= number_to_currency(@lot.min_bid) %> </p>
+
+    <div>
+
+      <%= form_with url: auction_lot_create_bids_path(@lot) do |f| %>
+        <div>
+          <%= f.label :bid, 'Lance' %>
+          <%= f.number_field :bid %>
+        </div>
+
+        <%= f.submit 'Enviar Lance' %>
+      <% end %>
+
+    </div>
+  </div>
+  
+<% end %>

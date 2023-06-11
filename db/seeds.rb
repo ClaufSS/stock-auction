@@ -316,65 +316,65 @@ admin_victor = User.find_by(cpf: "14392097072", user_type: :admin)
 
 arts = AuctionItem.where(category_item: fine_art)
 
-lot_one = Lot.new(
+lot_one = AuctionLot.new(
   code: 'D2E9H4',
   start_date: 0.day.from_now,
   end_date: 1.week.from_now,
   start_price: 800,
-  min_bid: 95,
-  register_user: admin_antonio,
-  approver_user: admin_victor
+  min_bid_diff: 95,
+  creator_user: admin_antonio,
+  evaluator_user: admin_victor,
+  status: :approved
 )
 
 lot_one.auction_items << arts
 lot_one.save(validate: false)
-lot_one.approved!
 
 
 eletronics = AuctionItem.where(category_item: eletronic)
 
-lot_two = Lot.new(
+lot_two = AuctionLot.new(
   code: 'Y7G5P1',
   start_date: 0.day.from_now,
   end_date: 0.day.from_now + 8.minutes,
   start_price: 260,
-  min_bid: 25,
-  register_user: admin_antonio,
-  approver_user: admin_victor
+  min_bid_diff: 25,
+  creator_user: admin_antonio,
+  evaluator_user: admin_victor,
+  status: :approved
 )
 
 lot_two.auction_items << eletronics
 lot_two.save(validate: false)
-lot_two.approved!
 
 
 decorations = AuctionItem.where(category_item: decoration)
 
-lot_three = Lot.new(
+lot_three = AuctionLot.new(
   code: 'N3V6K2',
   start_date: 2.days.from_now,
   end_date: 1.week.from_now + 2.days,
   start_price: 200,
-  min_bid: 18,
-  register_user: admin_victor,
-  approver_user: admin_antonio
+  min_bid_diff: 18,
+  creator_user: admin_victor,
+  evaluator_user: admin_antonio,
+  status: :approved
 )
 
 lot_three.auction_items << decorations
 lot_three.save(validate: false)
-lot_three.approved!
 
 
 musical_instruments = AuctionItem.where(category_item: musical_instrument)
 
-lot_four = Lot.new(
+lot_four = AuctionLot.new(
   code: 'R9M5X8',
   start_date: 4.days.ago,
   end_date: 1.day.ago,
   start_price: 100,
-  min_bid: 5,
-  register_user: admin_victor,
-  approver_user: admin_antonio
+  min_bid_diff: 5,
+  creator_user: admin_victor,
+  evaluator_user: admin_antonio
 )
 
 lot_four.auction_items << musical_instruments.first

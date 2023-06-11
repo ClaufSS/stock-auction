@@ -10,7 +10,7 @@ describe 'Usuário faz login' do
 
     visit root_path
 
-    within 'nav' do
+    within 'header' do
       click_on 'Entrar'
     end
 
@@ -23,7 +23,7 @@ describe 'Usuário faz login' do
 
     expect(current_path).to eq root_path
 
-    within 'nav' do
+    within 'header' do
       expect(page).not_to have_link 'Entrar'
     end
   end

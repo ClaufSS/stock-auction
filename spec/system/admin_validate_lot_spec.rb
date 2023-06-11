@@ -2,9 +2,6 @@ require 'rails_helper'
 
 
 describe 'Administrador inspeciona um lote expirado' do
-  include ActiveSupport::Testing::TimeHelpers
-
-
   before :each do
     attach_img = ->(item, filename) {
       item.photo.attach(
@@ -47,15 +44,15 @@ describe 'Administrador inspeciona um lote expirado' do
       description: "Musical instrument"
     )
 
-    ######### Lots for tests
+    ######### AuctionLots for tests
     travel_to 1.week.ago do
-      @not_approved_lot = Lot.create!(
+      @not_approved_lot = AuctionLot.create!(
         code: 'MUS248',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
 
       ######### Musical instruments
@@ -70,7 +67,7 @@ describe 'Administrador inspeciona um lote expirado' do
       )
       
       attach_img.call(auction_item, "-CG-162-C-1.jpg")
-      auction_item.lot = @not_approved_lot
+      auction_item.auction_lot = @not_approved_lot
       auction_item.save!
 
       @not_approved_lot.save!
@@ -78,13 +75,13 @@ describe 'Administrador inspeciona um lote expirado' do
 
     
     travel_to 1.week.ago do
-      @without_offer_lot = Lot.create!(
+      @without_offer_lot = AuctionLot.create!(
         code: 'eLe110',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
 
       ######### Eletronics
@@ -99,22 +96,21 @@ describe 'Administrador inspeciona um lote expirado' do
       )
       
       attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-      auction_item.lot = @without_offer_lot
+      auction_item.auction_lot = @without_offer_lot
       auction_item.save!
 
-      @without_offer_lot.approver_user = approver
+      @without_offer_lot.evaluator_user = approver
       @without_offer_lot.approved!
-      @without_offer_lot.save!
     end
 
     travel_to 1.week.ago do
-      @with_offer_lot = Lot.create!(
+      @with_offer_lot = AuctionLot.create!(
         code: '000art',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
       
       ######### Arts
@@ -129,13 +125,13 @@ describe 'Administrador inspeciona um lote expirado' do
       )
       
       attach_img.call(auction_item, "3d3c94df-e78a-42d8-b0f5-5f0a32bb2945-szoxut.jpg")
-      auction_item.lot = @with_offer_lot
+      auction_item.auction_lot = @with_offer_lot
       auction_item.save!
 
-      @with_offer_lot.approver_user = approver
+      @with_offer_lot.evaluator_user = approver
       @with_offer_lot.approved!
-      @with_offer_lot.user_player = user
-      @with_offer_lot.offer = 100
+      @with_offer_lot.winner_bidder = user
+      @with_offer_lot.bids.create!(bidder: user, bid: 101)
       @with_offer_lot.save!
     end
   end
@@ -150,11 +146,11 @@ describe 'Administrador inspeciona um lote expirado' do
       )
   
       login_as(admin)
-      visit lot_path(@not_approved_lot)
+      visit auction_lot_path(@not_approved_lot)
 
       click_on 'Cancelar Lote'
 
-      expect(current_path).to eq lot_path(@not_approved_lot)
+      expect(current_path).to eq auction_lot_path(@not_approved_lot)
       expect(page).to have_content 'Status: Cancelado'
     end
 
@@ -166,15 +162,15 @@ describe 'Administrador inspeciona um lote expirado' do
       )
   
       login_as(admin)
-      visit lot_path(@without_offer_lot)
+      visit auction_lot_path(@without_offer_lot)
 
       click_on 'Cancelar Lote'
 
-      expect(current_path).to eq lot_path(@without_offer_lot)
+      expect(current_path).to eq auction_lot_path(@without_offer_lot)
       expect(page).to have_content 'Status: Cancelado'
     end
 
-    it 'e este deve sair da página de lotes expirados' do
+    it 'e lote deve sair da página de lotes expirados' do
       admin = User.create!(
         cpf: '25664836040',
         email: 'adalbertojr@leilaodogalpao.com.br',
@@ -182,9 +178,9 @@ describe 'Administrador inspeciona um lote expirado' do
       )
   
       login_as(admin)
-      visit lot_path(@without_offer_lot)
+      visit auction_lot_path(@without_offer_lot)
       click_on 'Cancelar Lote'
-      visit expired_lots_path
+      visit expired_auction_lots_path
 
       expect(page).not_to have_link "#{@without_offer_lot.code}"
     end
@@ -196,20 +192,20 @@ describe 'Administrador inspeciona um lote expirado' do
         password: 'f4k3p455w0rd'
       )
 
-      new_lot = Lot .create!(
+      new_lot = AuctionLot .create!(
         code: 'qwe123',
         start_date: 2.days.from_now,
         end_date: 5.days.from_now,
         start_price: 150,
-        min_bid: 5,
-        register_user: admin
+        min_bid_diff: 5,
+        creator_user: admin
       )
 
   
       login_as(admin)
-      visit lot_path(@without_offer_lot)
+      visit auction_lot_path(@without_offer_lot)
       click_on 'Cancelar Lote'
-      visit lot_path(new_lot)
+      visit auction_lot_path(new_lot)
 
       within '.add-item-area' do
         category = CategoryItem.where(description: 'Eletrônico').first
@@ -229,11 +225,11 @@ describe 'Administrador inspeciona um lote expirado' do
       )
 
       login_as(admin)
-      visit lot_path(@with_offer_lot)
+      visit auction_lot_path(@with_offer_lot)
 
       click_on 'Encerrar Lote'
 
-      expect(current_path).to eq lot_path(@with_offer_lot)
+      expect(current_path).to eq auction_lot_path(@with_offer_lot)
       expect(page).to have_content 'Status: Encerrado'
     end
 
@@ -245,7 +241,7 @@ describe 'Administrador inspeciona um lote expirado' do
       )
 
       login_as(admin)
-      visit lot_path(@with_offer_lot)
+      visit auction_lot_path(@with_offer_lot)
 
       click_on 'Encerrar Lote'
 

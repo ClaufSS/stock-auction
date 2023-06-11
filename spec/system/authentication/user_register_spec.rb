@@ -5,7 +5,7 @@ describe 'Usuário registra uma conta' do
   it 'a partir do menu' do
     visit root_path
 
-    within 'nav' do
+    within 'header' do
       click_on 'Entrar'
     end
     
@@ -21,8 +21,8 @@ describe 'Usuário registra uma conta' do
   context 'com sucesso' do
     it 'como usuário comum' do
       visit root_path
-      
-      within 'nav' do
+
+      within 'header' do
         click_on 'Entrar'
       end
 
@@ -46,7 +46,7 @@ describe 'Usuário registra uma conta' do
     it 'como administrador' do
       visit root_path
 
-      within 'nav' do
+      within 'header' do
         click_on 'Entrar'
       end
 

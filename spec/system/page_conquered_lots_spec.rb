@@ -2,8 +2,6 @@ require 'rails_helper'
 
 
 describe 'Página destinada a verificação de lotes conquistados' do
-  include ActiveSupport::Testing::TimeHelpers
-
   
   context 'caso seja administrador' do
     it 'não deve ver link' do
@@ -29,7 +27,7 @@ describe 'Página destinada a verificação de lotes conquistados' do
 
       login_as(admin)
 
-      visit conquered_lots_path
+      visit conquered_auction_lots_path
 
       expect(current_path).to eq root_path
       expect(page).to have_content 'Ação não permitida!'
@@ -56,7 +54,7 @@ describe 'Página destinada a verificação de lotes conquistados' do
       click_on 'Meus lotes'
     end
 
-    expect(current_path).to eq conquered_lots_path
+    expect(current_path).to eq conquered_auction_lots_path
     expect(page).to have_content 'Lotes conquistados'
   end
 
@@ -68,28 +66,26 @@ describe 'Página destinada a verificação de lotes conquistados' do
         password: "juliao<3Leilao"
       )
 
-      creator = User.create!(
-        cpf: '83923678045',
-        email: 'roberto@leilaodogalpao.com.br',
-        password: 'f4k3p455w0rd'
-      )
+      creator = FactoryBot.create(:creator)
+      evaluator = FactoryBot.create(:evaluator)
 
       travel_to 1.week.ago do
-        Lot.create!(
+        AuctionLot.create!(
           code: 'MUS248',
           start_date: 1.day.from_now,
           end_date: 3.days.from_now,
           start_price: 100,
-          min_bid: 2,
-          register_user: creator
+          min_bid_diff: 2,
+          creator_user: creator
         )
       end
 
-      lot = Lot.find_by(code: 'MUS248')
+      lot = AuctionLot.find_by(code: 'MUS248')
+      lot.evaluator_user = evaluator
       lot.canceled!
 
       login_as(user)
-      visit conquered_lots_path
+      visit conquered_auction_lots_path
 
       expect(page).not_to have_link "#{lot.code}"
     end
@@ -113,20 +109,20 @@ describe 'Página destinada a verificação de lotes conquistados' do
         password: 'f4k3p455w0rd'
       )
 
-      lot = Lot.create!(
+      lot = AuctionLot.create!(
         code: 'MUS248',
         start_date: 1.week.from_now,
         end_date: 2.weeks.from_now,
         start_price: 208,
-        min_bid: 7,
-        register_user: creator,
-        approver_user: approver
+        min_bid_diff: 7,
+        creator_user: creator,
+        evaluator_user: approver
       )
 
       lot.approved!
 
       login_as(user)
-      visit conquered_lots_path
+      visit conquered_auction_lots_path
 
       expect(page).not_to have_link "#{lot.code}"
     end
@@ -151,23 +147,23 @@ describe 'Página destinada a verificação de lotes conquistados' do
       )
 
       travel_to 2.days.ago do
-        lot = Lot.create!(
+        lot = AuctionLot.create!(
           code: 'MUS248',
           start_date: 1.day.from_now,
           end_date: 6.days.from_now,
           start_price: 80,
-          min_bid: 1.5,
-          register_user: creator,
-          approver_user: approver
+          min_bid_diff: 1.5,
+          creator_user: creator,
+          evaluator_user: approver
         )
 
         lot.approved!
       end
 
-      lot = Lot.find_by(code: 'MUS248')
+      lot = AuctionLot.find_by(code: 'MUS248')
 
       login_as(user)
-      visit conquered_lots_path
+      visit conquered_auction_lots_path
 
       expect(page).not_to have_link "#{lot.code}"
     end
@@ -198,25 +194,26 @@ describe 'Página destinada a verificação de lotes conquistados' do
       )
 
       travel_to 1.week.ago do
-        lot = Lot.create!(
+        lot = AuctionLot.create!(
           code: 'MUS248',
           start_date: 1.day.from_now,
           end_date: 3.days.from_now,
           start_price: 100,
-          min_bid: 2,
-          register_user: creator,
-          approver_user: approver,
-          user_player: other_user,
-          offer: 120
+          min_bid_diff: 2,
+          creator_user: creator,
+          evaluator_user: approver,
+          winner_bidder: other_user,
+          status: :approved
         )
 
-        lot.approved!
+        lot.bids.create!(bidder: other_user, bid: 101)
+        lot.save!
       end
       
-      lot = Lot.find_by(code: 'MUS248')
+      lot = AuctionLot.find_by(code: 'MUS248')
 
       login_as(user)
-      visit conquered_lots_path
+      visit conquered_auction_lots_path
 
       expect(page).not_to have_link "#{lot.code}"
     end

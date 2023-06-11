@@ -5,7 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :lots, class_name: "Lot", foreign_key: "user_player_id"
+  has_many :auction_lots, class_name: "AuctionLot", foreign_key: :winner_bidder_id
 
   
   validates :cpf, presence: true
@@ -19,8 +19,8 @@ class User < ApplicationRecord
   private
 
   def set_user_type
-    adm_domain = '@leilaodogalpao.com.br'
+    admin_domain = '@leilaodogalpao.com.br'
     
-    self.user_type = :admin if email.ends_with?(adm_domain)
+    self.user_type = :admin if email.ends_with?(admin_domain)
   end
 end

@@ -2,9 +2,6 @@ require 'rails_helper'
 
 
 describe 'Usuário vê lotes conquistados' do
-  include ActiveSupport::Testing::TimeHelpers
-
-
   it 'com sucesso' do
     attach_img = ->(item, filename) {
       item.photo.attach(
@@ -43,26 +40,26 @@ describe 'Usuário vê lotes conquistados' do
       description: "Musical instrument"
     )
 
-    ######### Lots for tests
+    ######### AuctionLots for tests
     travel_to 1.week.ago do
-      Lot.create!(
+      AuctionLot.create!(
         code: 'MUS248',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
     end
 
     travel_to 1.week.ago do
-      Lot.create!(
+      AuctionLot.create!(
         code: 'eLe110',
         start_date: 1.day.from_now,
         end_date: 3.days.from_now,
         start_price: 100,
-        min_bid: 2,
-        register_user: creator
+        min_bid_diff: 2,
+        creator_user: creator
       )
     end
 
@@ -77,13 +74,13 @@ describe 'Usuário vê lotes conquistados' do
       category_item: musical_instrument
     )
     
-    first_lot = Lot.find_by(code: 'MUS248')
+    first_lot = AuctionLot.find_by(code: 'MUS248')
     attach_img.call(auction_item, "-CG-162-C-1.jpg")
-    auction_item.lot = first_lot
+    auction_item.auction_lot = first_lot
     auction_item.save!
-    first_lot.approver_user = approver
-    first_lot.user_player = user
-    first_lot.offer = 150
+    first_lot.evaluator_user = approver
+    first_lot.bids.create!(bidder: user, bid: 150)
+    first_lot.winner_bidder = user
     first_lot.closed!
 
 
@@ -98,22 +95,18 @@ describe 'Usuário vê lotes conquistados' do
       category_item: eletronic
     )
     
-    second_lot = Lot.find_by(code: 'eLe110')
+    second_lot = AuctionLot.find_by(code: 'eLe110')
     attach_img.call(auction_item, "e2905b38d6ec704f88a29ebfbc066862.jpeg")
-    auction_item.lot = second_lot
+    auction_item.auction_lot = second_lot
     auction_item.save!
-    second_lot.approver_user = approver
-    second_lot.user_player = user
-    second_lot.offer = 150
+    second_lot.evaluator_user = approver
+    second_lot.bids.create!(bidder: user, bid: 150)
+    second_lot.winner_bidder = user
     second_lot.closed!
-
-
-    first_lot = Lot.find_by(code: 'MUS248')
-    second_lot = Lot.find_by(code: 'eLe110')
 
     login_as(user)
 
-    visit conquered_lots_path
+    visit conquered_auction_lots_path
 
     expect(page).to have_link "#{first_lot.code}"
     expect(page).to have_link "#{second_lot.code}"
